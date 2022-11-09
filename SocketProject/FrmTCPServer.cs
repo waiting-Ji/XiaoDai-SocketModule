@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -145,6 +146,20 @@ namespace SocketProject
                             AddLog(0, client + "：" + msg);
                             break;
                         case MessageType.File:
+                            Invoke(new Action(() =>
+                            {
+                                SaveFileDialog sfd = new SaveFileDialog();
+                                sfd.Filter = "txt files(*.txt)*.txt|xls files(*.xlsx)|*.xlsx|All files(*.*)|*.*";
+                                if (sfd.ShowDialog() == DialogResult.OK)
+                                {
+                                    string fileSavePath = sfd.FileName;
+                                    using (FileStream fs = new FileStream(fileSavePath, FileMode.Create))
+                                    {
+                                        fs.Write(buffer, 1, length);
+                                    }
+                                    AddLog(0, "文件成功保存至：" + fileSavePath);
+                                }
+                            }));
                             break;
                         case MessageType.JSON:
                             break;

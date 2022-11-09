@@ -200,6 +200,7 @@ namespace SocketProject
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 this.txt_File.Text = ofd.FileName;
+                AddLog(0, "选择文件：" + this.txt_File.Text);
             }
         }
 
@@ -234,9 +235,29 @@ namespace SocketProject
                     Array.Copy(send2, 0, send2Msg, 1, lenght);
                     send2Msg[0] = (byte)MessageType.File;
                     socketClient?.Send(send2Msg);
-                    #endregion
+                    AddLog(0, strMsg);
                 }
+                #endregion
+            }
         }
+
+        #region 发送JSON
+        private void btn_SendJSON_Click(object sender, EventArgs e)
+        {
+            List<Student> studentList = new List<Student>()
+            {
+                new Student(){ StudentID = 10001 , StudentName = "小明",ClassName = "软件一班"},
+                new Student(){ StudentID = 10002 , StudentName = "小红",ClassName = "软件二班"},
+                new Student(){ StudentID = 10003 , StudentName = "小花",ClassName = "软件三班"},
+            };
+
+            string str = JSONHelper.EntityToJSON(studentList);
+            byte[] send = Encoding.Default.GetBytes(str);
+            byte[] sendMsg = new byte[send.Length + 1];
+            Array.Copy(send, 0, sendMsg, 1, send.Length);
+            sendMsg[0] = (byte)MessageType.JSON;
+            socketClient?.Send(sendMsg);
         }
+        #endregion
     }
 }
