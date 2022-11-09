@@ -10,3 +10,15 @@ C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debu
 C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.exe
 C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.pdb
 C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.FrmTCPClient.resources
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\bin\Debug\SocketProject.exe.config
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\bin\Debug\SocketProject.exe
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\bin\Debug\SocketProject.pdb
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.csproj.AssemblyReference.cache
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.csproj.SuggestedBindingRedirects.cache
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.FrmTCPClient.resources
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.FrmTCPServer.resources
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.Properties.Resources.resources
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.csproj.GenerateResource.cache
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.csproj.CoreCompileInputs.cache
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.exe
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.pdb

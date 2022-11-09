@@ -34,7 +34,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_SelectFile = new System.Windows.Forms.Button();
             this.txt_File = new System.Windows.Forms.TextBox();
             this.txt_Send = new System.Windows.Forms.TextBox();
             this.lis_Rcv = new System.Windows.Forms.ListView();
@@ -54,6 +54,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txt_IP = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -82,7 +83,7 @@
             // 
             this.splitContainer1.Panel1.Controls.Add(this.label6);
             this.splitContainer1.Panel1.Controls.Add(this.label5);
-            this.splitContainer1.Panel1.Controls.Add(this.button1);
+            this.splitContainer1.Panel1.Controls.Add(this.btn_SelectFile);
             this.splitContainer1.Panel1.Controls.Add(this.txt_File);
             this.splitContainer1.Panel1.Controls.Add(this.txt_Send);
             this.splitContainer1.Panel1.Controls.Add(this.lis_Rcv);
@@ -125,14 +126,15 @@
             this.label5.TabIndex = 9;
             this.label5.Text = "客户端日志：";
             // 
-            // button1
+            // btn_SelectFile
             // 
-            this.button1.Location = new System.Drawing.Point(453, 537);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(107, 27);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "选择文件";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btn_SelectFile.Location = new System.Drawing.Point(453, 537);
+            this.btn_SelectFile.Name = "btn_SelectFile";
+            this.btn_SelectFile.Size = new System.Drawing.Size(107, 27);
+            this.btn_SelectFile.TabIndex = 3;
+            this.btn_SelectFile.Text = "选择文件";
+            this.btn_SelectFile.UseVisualStyleBackColor = true;
+            this.btn_SelectFile.Click += new System.EventHandler(this.btn_SelectFile_Click);
             // 
             // txt_File
             // 
@@ -240,6 +242,7 @@
             this.btn_SendFile.TabIndex = 13;
             this.btn_SendFile.Text = "发送文件";
             this.btn_SendFile.UseVisualStyleBackColor = true;
+            this.btn_SendFile.Click += new System.EventHandler(this.btn_SendFile_Click);
             // 
             // btn_Connect
             // 
@@ -304,6 +307,10 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "客户端IP：";
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // FrmTCPClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -333,7 +340,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListView lis_Rcv;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_SelectFile;
         private System.Windows.Forms.TextBox txt_File;
         private System.Windows.Forms.TextBox txt_Send;
         private System.Windows.Forms.Label label2;
@@ -354,6 +361,7 @@
         private System.Windows.Forms.Button btn_SendUTF8;
         private System.Windows.Forms.Button btn_SendASCLL;
         private System.Windows.Forms.Button btn_SendFile;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -26,7 +27,7 @@ namespace SocketProject
         }
         /*
          * 客户端程序编写步骤：
-         *  第一步：调用socketO函数创建一个用于通信的套接字
+         *  第一步：调用socket函数创建一个用于通信的套接字
          *  第二步：通过设置套接字地址结构，说明客户端与之通信的服务器的IP地址和端口号。
          *  第三步：调用connectO函数来建立与服务器的连接。
          *  第四步：调用读写函数发送或者接收数据。
@@ -191,5 +192,51 @@ namespace SocketProject
         }
         #endregion
 
+        private void btn_SelectFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            //设置默认路径
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                this.txt_File.Text = ofd.FileName;
+            }
+        }
+
+        private void btn_SendFile_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(this.txt_File.Text))
+            {
+                MessageBox.Show("请先选择您要发送的文件", "发送文件");
+            }
+            else
+            {
+                #region 客户端文件发送
+                //文件发送为两次，第一次为告知文件名称，第二次为发送文件内容
+                // 发送名称
+                using (FileStream fs = new FileStream(this.txt_File.Text, FileMode.Open))
+                {
+                    //获取文件名称
+                    //获取文件后缀
+                    string filename = Path.GetFileName(this.txt_File.Text);
+                    string fileExtension = Path.GetExtension(this.txt_File.Text);
+                    string strMsg = "发送" + filename + "." + fileExtension;
+                    byte[] send1 = Encoding.Default.GetBytes(strMsg);
+                    byte[] send1Msg = new byte[send1.Length + 1];
+                    Array.Copy(send1, 0, send1Msg, 1, send1.Length);
+                    send1Msg[0] = (byte)MessageType.UTF8;
+                    socketClient?.Send(send1Msg);
+
+                    //发送文件内容
+                    byte[] send2 = new byte[1024 * 1024 * 10];
+                    int lenght = fs.Read(send2, 0, send2.Length);
+                    byte[] send2Msg = new byte[lenght + 1];
+                    Array.Copy(send2, 0, send2Msg, 1, lenght);
+                    send2Msg[0] = (byte)MessageType.File;
+                    socketClient?.Send(send2Msg);
+                    #endregion
+                }
+        }
+        }
     }
 }
