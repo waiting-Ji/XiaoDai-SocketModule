@@ -1,0 +1,12 @@
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\bin\Debug\SocketProject.exe.config
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\bin\Debug\SocketProject.exe
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\bin\Debug\SocketProject.pdb
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.csproj.AssemblyReference.cache
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.csproj.SuggestedBindingRedirects.cache
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.FrmTCPServer.resources
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.Properties.Resources.resources
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.csproj.GenerateResource.cache
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.csproj.CoreCompileInputs.cache
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.exe
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.pdb
+C:\Users\呆百万\Documents\文件\project\SocketProject\SocketProject\obj\Debug\SocketProject.FrmTCPClient.resources
