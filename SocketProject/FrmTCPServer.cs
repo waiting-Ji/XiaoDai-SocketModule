@@ -162,6 +162,13 @@ namespace SocketProject
                             }));
                             break;
                         case MessageType.JSON:
+                            Invoke(new Action(() =>
+                            {
+                                string res = Encoding.Default.GetString(buffer,1,length);
+                                List<Student> studentList = JSONHelper.JsonToEntity<List<Student>>(res);
+                                new FrmJSON(studentList).Show();
+                                AddLog(0, "接收JSON数据：" + res);
+                            }));
                             break;
                         default:
                             break;
@@ -212,6 +219,7 @@ namespace SocketProject
                 if (operate)
                 {
                     this.lis_Online.Items.Add(client);
+                    var s = this.lis_Online.Items.Count;
                 }
                 else
                 {
@@ -280,58 +288,215 @@ namespace SocketProject
         }
         #endregion
 
-        private void btn_SendMsg_Click(object sender, EventArgs e)
-        {
-            if (this.lis_Online.SelectedIndex != null)
-            {
-                AddLog(0, "发送内容：" + this.txt_Send.Text.Trim());
-                string client = default;
-                if (this.lis_Online.Items.Count == 0)
-                {
-                    MessageBox.Show("客户端未连接服务器,请重试","错误");
-                    return;
-                }
-                else
-                {
-                    if (this.lis_Online.Items.Count <= 1)
-                    {
-                        client = this.lis_Online.Items[0].ToString();
-                        CurrentClientlist[client].Send(Encoding.Default.GetBytes(this.txt_Send.Text.Trim()));
-                    }
-                    else
-                    {
-                        foreach (var item in this.lis_Online.Items)
-                        {
-                            client = item.ToString();
-                            CurrentClientlist[client].Send(Encoding.Default.GetBytes(this.txt_Send.Text.Trim()));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("请选择你要发送的客户对象！", "发送消息");
-            }
-        }
 
-        private void btn_SendAll_Click(object sender, EventArgs e)
-        {
-            if (this.lis_Online.Items.Count > 0)
-            {
-                foreach (string item in this.lis_Online.Items)
-                {
-                    CurrentClientlist[item].Send(Encoding.Default.GetBytes(this.txt_Send.Text.Trim()));
-                }
-            }
-            else
-            {
-                MessageBox.Show("当前连接的客户端对象数量为0！", "发送消息");
-            }
-        }
-
+        #region 启动客户端
         private void btn_clitent_Click(object sender, EventArgs e)
         {
             new FrmTCPClient().Show();
         }
+        #endregion
+
+        #region 服务端发送ASCLL
+        private void btn_SendASCLL_Click(object sender, EventArgs e)
+        {
+            if (this.lis_Online.SelectedItems.Count > 0)
+            {
+                AddLog(0, "发送内容：" + this.txt_Send.Text.Trim());
+                byte[] send = Encoding.Default.GetBytes(this.txt_Send.Text.Trim());
+                byte[] sendMsg = new byte[send.Length + 1];
+                // 整体拷贝数组
+                Array.Copy(send, 0, sendMsg, 1, send.Length);
+                // 首字节赋值
+                sendMsg[0] = (byte)MessageType.ASCLL;
+                foreach (var item in this.lis_Online.SelectedItems)
+                {
+                    string client = item.ToString();
+                    CurrentClientlist[client]?.Send(sendMsg);
+                }
+                this.txt_Send.Clear();
+            }
+            else
+            {
+                MessageBox.Show("请选择你要发送的客户端对象！", "发送消息");
+            }
+
+            AddLog(0, "发送内容：" + this.txt_Send.Text.Trim());
+        }
+        #endregion
+
+        #region 服务端发送UTF8
+        private void btn_SendUTF8_Click(object sender, EventArgs e)
+        {
+            if (this.lis_Online.SelectedItems.Count > 0)
+            {
+                AddLog(0, "发送内容：" + this.txt_Send.Text.Trim());
+                byte[] send = Encoding.UTF8.GetBytes(this.txt_Send.Text.Trim());
+                byte[] sendMsg = new byte[send.Length + 1];
+                // 整体拷贝数组
+                Array.Copy(send, 0, sendMsg, 1, send.Length);
+                // 首字节赋值
+                sendMsg[0] = (byte)MessageType.UTF8;
+                foreach (var item in this.lis_Online.SelectedItems)
+                {
+
+                    string client = item.ToString();
+                    CurrentClientlist[client]?.Send(sendMsg);
+                }
+                this.txt_Send.Clear();
+            }
+            else
+            {
+                MessageBox.Show("请选择你要发送的客户端对象！", "发送消息");
+            }
+
+            AddLog(0, "发送内容：" + this.txt_Send.Text.Trim());
+        }
+        #endregion
+
+        #region 服务端发送Hex
+        private void btn_SendHex_Click(object sender, EventArgs e)
+        {
+            if (this.lis_Online.SelectedItems.Count > 0)
+            {
+                AddLog(0, "发送内容：" + this.txt_Send.Text.Trim());
+                byte[] send = Encoding.Default.GetBytes(this.txt_Send.Text.Trim());
+                byte[] sendMsg = new byte[send.Length + 1];
+                // 整体拷贝数组
+                Array.Copy(send, 0, sendMsg, 1, send.Length);
+                // 首字节赋值
+                sendMsg[0] = (byte)MessageType.Hex;
+                foreach (var item in this.lis_Online.SelectedItems)
+                {
+
+                    string client = item.ToString();
+                    CurrentClientlist[client]?.Send(sendMsg);
+                }
+                this.txt_Send.Clear();
+            }
+            else
+            {
+                MessageBox.Show("请选择你要发送的客户端对象！", "发送消息");
+            }
+
+            AddLog(0, "发送内容：" + this.txt_Send.Text.Trim());
+        }
+        #endregion
+
+        #region 选择文件
+        private void btn_SelectFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            //设置默认路径
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                this.txt_File.Text = ofd.FileName;
+                AddLog(0, "选择文件：" + this.txt_File.Text);
+            }
+        }
+        #endregion
+
+        private void btn_SendFile_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(this.txt_File.Text))
+            {
+                MessageBox.Show("请先选择您要发送的文件", "发送文件");
+            }
+            else
+            {
+                #region 客户端文件发送
+                if (this.lis_Online.SelectedItems.Count > 0)
+                {
+                
+                    //文件发送为两次，第一次为告知文件名称，第二次为发送文件内容
+                    // 发送名称
+                    using (FileStream fs = new FileStream(this.txt_File.Text, FileMode.Open))
+                    {
+                        //获取文件名称
+                        //获取文件后缀
+                        string filename = Path.GetFileName(this.txt_File.Text);
+                        string fileExtension = Path.GetExtension(this.txt_File.Text);
+                        string strMsg = "发送" + filename + "." + fileExtension;
+                        byte[] send1 = Encoding.Default.GetBytes(strMsg);
+                        byte[] send1Msg = new byte[send1.Length + 1];
+                        Array.Copy(send1, 0, send1Msg, 1, send1.Length);
+                        send1Msg[0] = (byte)MessageType.UTF8;
+
+                        foreach (var item in this.lis_Online.SelectedItems)
+                        {
+
+                            string client = item.ToString();
+                            CurrentClientlist[client]?.Send(send1Msg);
+                        }
+
+                        //发送文件内容
+                        byte[] send2 = new byte[1024 * 1024 * 10];
+                        int lenght = fs.Read(send2, 0, send2.Length);
+                        byte[] send2Msg = new byte[lenght + 1];
+                        Array.Copy(send2, 0, send2Msg, 1, lenght);
+                        send2Msg[0] = (byte)MessageType.File;
+                        foreach (var item in this.lis_Online.SelectedItems)
+                        {
+
+                            string client = item.ToString();
+                            CurrentClientlist[client]?.Send(send2Msg);
+                        }
+                        this.txt_File.Clear();
+                        AddLog(0, strMsg);
+                    }
+                    
+                }
+                else
+                {
+                    MessageBox.Show("请选择你要发送的客户端对象", "发送消息");
+                }
+                #endregion
+            }
+        }
+
+        private void btn_SendJSON_Click(object sender, EventArgs e)
+        {
+            if (this.lis_Online.SelectedItems.Count > 0)
+            {
+                List<Student> studentList = new List<Student>()
+                {
+                    new Student(){ StudentID = 10001 , StudentName = "小明",ClassName = "软件一班"},
+                    new Student(){ StudentID = 10002 , StudentName = "小红",ClassName = "软件二班"},
+                    new Student(){ StudentID = 10003 , StudentName = "小花",ClassName = "软件三班"},
+                };
+
+                string str = JSONHelper.EntityToJSON(studentList);
+                byte[] send = Encoding.Default.GetBytes(str);
+                byte[] sendMsg = new byte[send.Length + 1];
+                Array.Copy(send, 0, sendMsg, 1, send.Length);
+                sendMsg[0] = (byte)MessageType.JSON;
+                foreach (var item in this.lis_Online.SelectedItems)
+                {
+
+                    string client = item.ToString();
+                    CurrentClientlist[client]?.Send(sendMsg);
+                }
+                AddLog(0, "已发送：" + sendMsg);
+            }
+            else
+            {
+                MessageBox.Show("请选择你要发送的客户端对象", "发送消息");
+            }
+        }
+
+        #region 全部选择
+        private void btn_SelectAll_Click(object sender, EventArgs e)
+        {
+            if (CurrentClientlist.Count == 0)
+            {
+                MessageBox.Show("当前在线列表为空，无法全选!", "全部选择");
+            }
+
+            for (int i = 0; i < this.CurrentClientlist.Count; i++)
+            {
+                this.lis_Online.SetSelected(i, true);
+            }
+        }
+        #endregion
     }
 }

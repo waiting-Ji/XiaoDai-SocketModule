@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static SocketProject.FrmTCPServer;
@@ -64,6 +65,7 @@ namespace SocketProject
             this.btn_Connect.Enabled = false;
         }
 
+        #region 多线程接收数据
         private void CheckReceiveMsg()
         {
             while (true)
@@ -82,8 +84,50 @@ namespace SocketProject
                 }
                 if (length > 0)
                 {
-                    string msg = Encoding.Default.GetString(buffer, 0, length);
-                    AddLog(0, "服务器：" + msg);
+                    string msg = string.Empty;
+                    MessageType type = (MessageType)buffer[0];
+                    switch (type)
+                    {
+                        case MessageType.ASCLL:
+                            msg = Encoding.ASCII.GetString(buffer, 1, length - 1);
+                            AddLog(0, "服务器：" + msg);
+                            break;
+                        case MessageType.UTF8:
+                            msg = Encoding.UTF8.GetString(buffer, 1, length - 1);
+                            AddLog(0, "服务器：" + msg);
+                            break;
+                        case MessageType.Hex:
+                            msg = HexString(buffer, 1, length - 1);
+                            AddLog(0, "服务器：" + msg);
+                            break;
+                        case MessageType.File:
+                            Invoke(new Action(() =>
+                            {
+                                SaveFileDialog sfd = new SaveFileDialog();
+                                sfd.Filter = "txt files(*.txt)*.txt|xls files(*.xlsx)|*.xlsx|All files(*.*)|*.*";
+                                if (sfd.ShowDialog() == DialogResult.OK)
+                                {
+                                    string fileSavePath = sfd.FileName;
+                                    using (FileStream fs = new FileStream(fileSavePath, FileMode.Create))
+                                    {
+                                        fs.Write(buffer, 1, length);
+                                    }
+                                    AddLog(0, "文件成功保存至：" + fileSavePath);
+                                }
+                            }));
+                            break;
+                        case MessageType.JSON:
+                            Invoke(new Action(() =>
+                            {
+                                string res = Encoding.Default.GetString(buffer, 1, length);
+                                List<Student> studentList = JSONHelper.JsonToEntity<List<Student>>(res);
+                                new FrmJSON(studentList).Show();
+                                AddLog(0, "接收JSON数据：" + res);
+                            }));
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 else
                 {
@@ -92,6 +136,7 @@ namespace SocketProject
                 }
             }
         }
+        #endregion
 
         private string CurrentTime
         {
@@ -257,6 +302,36 @@ namespace SocketProject
             Array.Copy(send, 0, sendMsg, 1, send.Length);
             sendMsg[0] = (byte)MessageType.JSON;
             socketClient?.Send(sendMsg);
+        }
+        #endregion
+        #region 16进制字符串处理
+        private string HexString(byte[] buffer, int start, int lenght)
+        {
+            string Result = string.Empty;
+            if (buffer != null && buffer.Length >= start + lenght)
+            {
+                // 截取字节数组
+                byte[] res = new byte[lenght];
+                Array.Copy(buffer, start, res, 0, lenght);
+                string Hex = Encoding.Default.GetString(res, 0, res.Length);
+                if (Hex.Contains(" "))
+                {
+                    string[] str = Regex.Split(Hex, "\\s+", RegexOptions.IgnoreCase);
+                    foreach (var item in str)
+                    {
+                        Result += "0x" + item + " ";
+                    }
+                }
+                else
+                {
+                    Result += "0x" + Hex;
+                }
+            }
+            else
+            {
+                Result = "Error";
+            }
+            return Result;
         }
         #endregion
     }

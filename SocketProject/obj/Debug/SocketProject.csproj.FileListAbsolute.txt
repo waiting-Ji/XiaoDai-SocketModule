@@ -22,3 +22,7 @@ D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\
 D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.csproj.CoreCompileInputs.cache
 D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.exe
 D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.pdb
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\bin\Debug\Newtonsoft.Json.dll
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\bin\Debug\Newtonsoft.Json.xml
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.FrmJSON.resources
+D:\Program Files\Git\gitRepository\XiaoDai-SocketModule\SocketProject\obj\Debug\SocketProject.csproj.CopyComplete
